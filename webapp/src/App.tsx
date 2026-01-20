@@ -1,20 +1,18 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { ForceGraph } from './components/ForceGraph';
 import { VennDiagram } from './components/VennDiagram';
 import { MatrixHeatmap } from './components/MatrixHeatmap';
+import { ShowBrowser } from './components/ShowBrowser';
+import { WriterDirectory } from './components/WriterDirectory';
 import { fetchAllData, type AppData } from './shell/api';
-import { buildShowOverlapGraph } from './core/graph';
-import type { Graph, GraphNode } from './core/types';
 
-type ViewMode = 'all' | 'graph' | 'venn' | 'matrix';
+type ViewMode = 'both' | 'compare' | 'matrix' | 'browse' | 'writers';
 
 function App() {
   const [data, setData] = useState<AppData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>('all');
-  const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('both');
 
   useEffect(() => {
     const loadData = async () => {
@@ -31,15 +29,28 @@ function App() {
     loadData();
   }, []);
 
-  const graph: Graph | null = data
-    ? buildShowOverlapGraph(data.shows, data.writers, data.links)
-    : null;
+  // Auto-refresh data every 30 seconds to pick up crawler updates
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const result = await fetchAllData();
+        setData(result);
+      } catch {
+        // Silently fail on refresh
+      }
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   if (loading) {
     return (
       <div className="app loading">
-        <h1>TV Writer Overlap Explorer</h1>
-        <p>Loading data...</p>
+        <div className="loading-content">
+          <div className="spinner" />
+          <h1>TV Writer Overlap Explorer</h1>
+          <p>Loading show data...</p>
+        </div>
       </div>
     );
   }
@@ -57,7 +68,7 @@ function App() {
     );
   }
 
-  if (!data || !graph) {
+  if (!data) {
     return (
       <div className="app">
         <h1>TV Writer Overlap Explorer</h1>
@@ -71,57 +82,45 @@ function App() {
       <header>
         <h1>TV Writer Overlap Explorer</h1>
         <p className="subtitle">
-          Discover connections between TV shows through their writers.
-          {data.shows.length} shows, {data.writers.length} writers loaded.
+          Discover connections between {data.shows.length} TV shows through their {data.writers.length} writers
         </p>
 
         <nav className="view-tabs">
           <button
-            className={viewMode === 'all' ? 'active' : ''}
-            onClick={() => setViewMode('all')}
+            className={viewMode === 'both' ? 'active' : ''}
+            onClick={() => setViewMode('both')}
           >
-            All Drafts
+            Overview
           </button>
           <button
-            className={viewMode === 'graph' ? 'active' : ''}
-            onClick={() => setViewMode('graph')}
+            className={viewMode === 'compare' ? 'active' : ''}
+            onClick={() => setViewMode('compare')}
           >
-            Force Graph
-          </button>
-          <button
-            className={viewMode === 'venn' ? 'active' : ''}
-            onClick={() => setViewMode('venn')}
-          >
-            Venn Diagram
+            Compare Shows
           </button>
           <button
             className={viewMode === 'matrix' ? 'active' : ''}
             onClick={() => setViewMode('matrix')}
           >
-            Matrix Heatmap
+            Full Matrix
+          </button>
+          <button
+            className={viewMode === 'browse' ? 'active' : ''}
+            onClick={() => setViewMode('browse')}
+          >
+            Browse Shows
+          </button>
+          <button
+            className={viewMode === 'writers' ? 'active' : ''}
+            onClick={() => setViewMode('writers')}
+          >
+            Writers
           </button>
         </nav>
       </header>
 
       <main>
-        {(viewMode === 'all' || viewMode === 'graph') && (
-          <section className="visualization">
-            <ForceGraph
-              graph={graph}
-              width={viewMode === 'all' ? 700 : 900}
-              height={viewMode === 'all' ? 500 : 700}
-              onNodeClick={setSelectedNode}
-            />
-            {selectedNode && (
-              <div className="node-info">
-                <strong>Selected:</strong> {selectedNode.label} (
-                {selectedNode.type})
-              </div>
-            )}
-          </section>
-        )}
-
-        {(viewMode === 'all' || viewMode === 'venn') && (
+        {(viewMode === 'both' || viewMode === 'compare') && (
           <section className="visualization">
             <VennDiagram
               shows={data.shows}
@@ -131,7 +130,7 @@ function App() {
           </section>
         )}
 
-        {(viewMode === 'all' || viewMode === 'matrix') && (
+        {(viewMode === 'both' || viewMode === 'matrix') && (
           <section className="visualization">
             <MatrixHeatmap
               shows={data.shows}
@@ -140,11 +139,27 @@ function App() {
             />
           </section>
         )}
+
+        {viewMode === 'browse' && (
+          <section className="visualization">
+            <ShowBrowser
+              shows={data.shows}
+              writers={data.writers}
+              links={data.links}
+            />
+          </section>
+        )}
+
+        {viewMode === 'writers' && (
+          <section className="visualization">
+            <WriterDirectory />
+          </section>
+        )}
       </main>
 
       <footer>
         <p>
-          Data scraped from IMDB. See how writers connect your favorite shows!
+          Data from IMDB · Click any show or writer name to view on IMDB
         </p>
       </footer>
     </div>

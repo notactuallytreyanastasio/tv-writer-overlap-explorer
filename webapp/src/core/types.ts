@@ -15,6 +15,9 @@ export interface Writer {
   readonly id: number;
   readonly imdbId: string;
   readonly name: string;
+  readonly imageUrl?: string | null;
+  readonly bio?: string | null;
+  readonly showCount?: number;
 }
 
 export interface ShowWriterLink {
@@ -65,4 +68,19 @@ export interface VennSet {
 export interface VennData {
   readonly sets: ReadonlyArray<VennSet>;
   readonly showLabels: Record<string, string>;
+}
+
+export interface PaginationInfo {
+  readonly page: number;
+  readonly perPage: number;
+  readonly total: number;
+  readonly totalPages: number;
+  readonly hasNext: boolean;
+  readonly hasPrev: boolean;
+  readonly search?: string | null;
+}
+
+export interface PaginatedWriters {
+  readonly writers: ReadonlyArray<Writer>;
+  readonly pagination: PaginationInfo;
 }

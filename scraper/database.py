@@ -32,7 +32,9 @@ def init_db() -> None:
         CREATE TABLE IF NOT EXISTS writers (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             imdb_id TEXT UNIQUE NOT NULL,
-            name TEXT NOT NULL
+            name TEXT NOT NULL,
+            image_url TEXT,
+            bio TEXT
         );
 
         CREATE TABLE IF NOT EXISTS show_writers (
@@ -202,3 +204,89 @@ def get_writer_overlap():
         d['show_ids'] = [int(x) for x in d['show_ids'].split('|||')] if d['show_ids'] else []
         result.append(d)
     return result
+
+
+def migrate_add_writer_details() -> None:
+    """Add image_url and bio columns to writers table if they don't exist."""
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    # Check if columns exist
+    cursor.execute("PRAGMA table_info(writers)")
+    columns = {row["name"] for row in cursor.fetchall()}
+
+    if "image_url" not in columns:
+        cursor.execute("ALTER TABLE writers ADD COLUMN image_url TEXT")
+
+    if "bio" not in columns:
+        cursor.execute("ALTER TABLE writers ADD COLUMN bio TEXT")
+
+    conn.commit()
+    conn.close()
+
+
+def update_writer_details(imdb_id: str, image_url: Optional[str] = None,
+                          bio: Optional[str] = None) -> bool:
+    """Update a writer's image URL and/or bio. Returns True if writer exists."""
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id FROM writers WHERE imdb_id = ?", (imdb_id,))
+    row = cursor.fetchone()
+
+    if not row:
+        conn.close()
+        return False
+
+    if image_url is not None or bio is not None:
+        updates = []
+        params = []
+
+        if image_url is not None:
+            updates.append("image_url = ?")
+            params.append(image_url)
+
+        if bio is not None:
+            updates.append("bio = ?")
+            params.append(bio)
+
+        params.append(imdb_id)
+        cursor.execute(
+            f"UPDATE writers SET {', '.join(updates)} WHERE imdb_id = ?",
+            params
+        )
+        conn.commit()
+
+    conn.close()
+    return True
+
+
+def get_writers_without_details():
+    """Get writers who don't have image_url or bio yet."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT id, imdb_id, name
+        FROM writers
+        WHERE image_url IS NULL OR bio IS NULL
+        ORDER BY name
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]
+
+
+def get_all_writers_with_details():
+    """Get all writers with their details, ordered alphabetically."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT w.*, COUNT(DISTINCT sw.show_id) as show_count
+        FROM writers w
+        LEFT JOIN show_writers sw ON w.id = sw.writer_id
+        GROUP BY w.id
+        ORDER BY w.name COLLATE NOCASE
+    """)
+    rows = cursor.fetchall()
+    conn.close()
+    return [dict(row) for row in rows]

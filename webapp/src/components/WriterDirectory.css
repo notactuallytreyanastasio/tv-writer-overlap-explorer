@@ -1,0 +1,357 @@
+.writer-directory {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border-radius: 16px;
+  padding: 2rem;
+  color: #e0e0e0;
+}
+
+.writer-directory h2 {
+  margin: 0 0 0.5rem 0;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.writer-directory .description {
+  color: #a0a0b0;
+  margin: 0 0 1.5rem 0;
+  font-size: 0.95rem;
+}
+
+.writer-directory.loading,
+.writer-directory.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+}
+
+.writer-directory .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(100, 210, 200, 0.2);
+  border-top-color: #64d2c8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Search form */
+.search-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.search-input::placeholder {
+  color: #707090;
+}
+
+.search-input:focus {
+  border-color: #667eea;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.clear-search {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #707090;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+}
+
+.clear-search:hover {
+  color: #fff;
+}
+
+.search-btn {
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(135deg, #667eea 0%, #64d2c8 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.search-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.page-numbers {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.page-btn {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: #c0c0d0;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #64d2c8 100%);
+  color: #fff;
+  border-color: transparent;
+}
+
+.page-btn.prev,
+.page-btn.next {
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+}
+
+.ellipsis {
+  color: #606080;
+  padding: 0 0.25rem;
+}
+
+/* Go to page */
+.go-to-page {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.go-to-page label {
+  color: #a0a0b0;
+  font-size: 0.85rem;
+}
+
+.go-to-input {
+  width: 70px;
+  padding: 0.5rem 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.85rem;
+  text-align: center;
+  outline: none;
+  -moz-appearance: textfield;
+}
+
+.go-to-input::-webkit-outer-spin-button,
+.go-to-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.go-to-input::placeholder {
+  color: #606080;
+}
+
+.go-to-input:focus {
+  border-color: #667eea;
+}
+
+.go-btn {
+  padding: 0.5rem 0.75rem;
+}
+
+/* No results */
+.no-results {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #a0a0b0;
+}
+
+.no-results p {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+}
+
+.clear-btn {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clear-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Writers list */
+.writers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.writer-card {
+  display: flex;
+  gap: 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.2s;
+}
+
+.writer-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.writer-image {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #2a2a3e;
+}
+
+.writer-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.writer-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.writer-info h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.writer-name-link {
+  color: #fff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color 0.2s;
+}
+
+.writer-name-link:hover {
+  color: #64d2c8;
+}
+
+.writer-name-link .external-icon {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.writer-name-link:hover .external-icon {
+  opacity: 1;
+}
+
+.show-count {
+  display: inline-block;
+  background: rgba(100, 210, 200, 0.2);
+  color: #64d2c8;
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.bio {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #a0a0b0;
+}
+
+.bio.no-bio {
+  font-style: italic;
+  color: #606080;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .writer-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .writer-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+  }
+
+  .page-numbers {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+}

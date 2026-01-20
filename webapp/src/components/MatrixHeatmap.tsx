@@ -1,16 +1,18 @@
 /**
- * Draft 3: Matrix heatmap visualization.
+ * Matrix heatmap visualization.
  * Shows shared writer counts between all pairs of shows.
  */
 
 import { useMemo, useState } from 'react';
 import type { Show, Writer, ShowWriterLink, ShowWithWriters } from '../core/types';
 import { enrichShowsWithWriters, createOverlapMatrix, getSharedWriters } from '../core/overlap';
+import './MatrixHeatmap.css';
 
 interface MatrixHeatmapProps {
   readonly shows: ReadonlyArray<Show>;
   readonly writers: ReadonlyArray<Writer>;
   readonly links: ReadonlyArray<ShowWriterLink>;
+  readonly onShowSelect?: (show: Show) => void;
 }
 
 interface CellInfo {
@@ -19,8 +21,12 @@ interface CellInfo {
   sharedWriters: ReadonlyArray<Writer>;
 }
 
-export const MatrixHeatmap = ({ shows, writers, links }: MatrixHeatmapProps) => {
+const imdbShowUrl = (imdbId: string) => `https://www.imdb.com/title/${imdbId}/`;
+const imdbWriterUrl = (imdbId: string) => `https://www.imdb.com/name/${imdbId}/`;
+
+export const MatrixHeatmap = ({ shows, writers, links, onShowSelect }: MatrixHeatmapProps) => {
   const [hoveredCell, setHoveredCell] = useState<CellInfo | null>(null);
+  const [selectedCell, setSelectedCell] = useState<CellInfo | null>(null);
 
   const enrichedShows = useMemo(
     () => enrichShowsWithWriters(shows, writers, links),
@@ -44,20 +50,32 @@ export const MatrixHeatmap = ({ shows, writers, links }: MatrixHeatmapProps) => 
     return max;
   }, [matrix]);
 
-  const getColor = (value: number, isdiag: boolean): string => {
-    if (isdiag) return '#e0e0e0';
-    if (value === 0) return '#fff';
+  const getColor = (value: number, isDiag: boolean): string => {
+    if (isDiag) return '#2a2a3e';
+    if (value === 0) return '#1a1a2e';
     const intensity = Math.min(value / Math.max(maxValue, 1), 1);
-    const r = Math.round(255 - intensity * 100);
-    const g = Math.round(255 - intensity * 180);
-    const b = Math.round(255 - intensity * 50);
+    // Purple to teal gradient
+    const r = Math.round(60 + intensity * 20);
+    const g = Math.round(60 + intensity * 140);
+    const b = Math.round(100 + intensity * 100);
     return `rgb(${r}, ${g}, ${b})`;
   };
 
-  const cellSize = 60;
-  const labelWidth = 120;
-  const svgWidth = labelWidth + enrichedShows.length * cellSize;
-  const svgHeight = labelWidth + enrichedShows.length * cellSize;
+  const cellSize = 50;
+  const labelPadding = 140;
+  const headerHeight = 100;
+  const svgWidth = labelPadding + enrichedShows.length * cellSize + 20;
+  const svgHeight = headerHeight + enrichedShows.length * cellSize + 20;
+
+  const handleCellClick = (i: number, j: number) => {
+    if (i === j) return;
+    const shared = getSharedWriters(enrichedShows[i], enrichedShows[j]);
+    setSelectedCell({
+      showA: enrichedShows[i],
+      showB: enrichedShows[j],
+      sharedWriters: shared,
+    });
+  };
 
   const handleCellHover = (i: number, j: number) => {
     if (i === j) {
@@ -72,124 +90,164 @@ export const MatrixHeatmap = ({ shows, writers, links }: MatrixHeatmapProps) => 
     });
   };
 
+  const activeCell = selectedCell || hoveredCell;
+
   return (
     <div className="matrix-heatmap">
-      <h2>Draft 3: Matrix Heatmap</h2>
+      <h2>Writer Overlap Matrix</h2>
       <p className="description">
-        Grid showing shared writer counts between all show pairs.
-        Darker colors = more shared writers. Hover for details.
+        Click any cell to see shared writers. Click show names to explore on IMDB.
       </p>
 
-      <div style={{ display: 'flex', gap: '2rem' }}>
-        <svg width={svgWidth} height={svgHeight}>
-          {/* Column labels (top) */}
-          {enrichedShows.map((show, i) => (
-            <text
-              key={`col-${show.id}`}
-              x={labelWidth + i * cellSize + cellSize / 2}
-              y={labelWidth - 10}
-              textAnchor="end"
-              transform={`rotate(-45 ${labelWidth + i * cellSize + cellSize / 2} ${labelWidth - 10})`}
-              fontSize="11"
-            >
-              {show.title.length > 15 ? show.title.slice(0, 15) + '...' : show.title}
-            </text>
-          ))}
+      <div className="matrix-container">
+        <div className="matrix-scroll">
+          <svg width={svgWidth} height={svgHeight}>
+            <defs>
+              <linearGradient id="cellGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#667eea" />
+                <stop offset="100%" stopColor="#64d2c8" />
+              </linearGradient>
+            </defs>
 
-          {/* Row labels (left) */}
-          {enrichedShows.map((show, i) => (
-            <text
-              key={`row-${show.id}`}
-              x={labelWidth - 10}
-              y={labelWidth + i * cellSize + cellSize / 2 + 4}
-              textAnchor="end"
-              fontSize="11"
-            >
-              {show.title.length > 15 ? show.title.slice(0, 15) + '...' : show.title}
-            </text>
-          ))}
-
-          {/* Matrix cells */}
-          {matrix.map((row, i) =>
-            row.map((value, j) => (
-              <g key={`${i}-${j}`}>
-                <rect
-                  x={labelWidth + j * cellSize}
-                  y={labelWidth + i * cellSize}
-                  width={cellSize - 2}
-                  height={cellSize - 2}
-                  fill={getColor(value, i === j)}
-                  stroke="#ccc"
-                  strokeWidth={1}
-                  style={{ cursor: i !== j ? 'pointer' : 'default' }}
-                  onMouseEnter={() => handleCellHover(i, j)}
-                  onMouseLeave={() => setHoveredCell(null)}
-                />
-                <text
-                  x={labelWidth + j * cellSize + cellSize / 2 - 1}
-                  y={labelWidth + i * cellSize + cellSize / 2 + 4}
-                  textAnchor="middle"
-                  fontSize="12"
-                  fill={i === j ? '#999' : value > maxValue / 2 ? '#fff' : '#333'}
+            {/* Column labels (top) - fixed positioning */}
+            {enrichedShows.map((show, i) => (
+              <g key={`col-${show.id}`}>
+                <a
+                  href={imdbShowUrl(show.imdbId)}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  {value}
-                </text>
+                  <text
+                    x={labelPadding + i * cellSize + cellSize / 2}
+                    y={headerHeight - 8}
+                    textAnchor="start"
+                    transform={`rotate(-55 ${labelPadding + i * cellSize + cellSize / 2} ${headerHeight - 8})`}
+                    className="matrix-label column-label"
+                  >
+                    {show.title.length > 18 ? show.title.slice(0, 18) + '…' : show.title}
+                  </text>
+                </a>
               </g>
-            ))
-          )}
-        </svg>
+            ))}
 
-        {/* Hover info panel */}
-        <div
-          style={{
-            minWidth: '250px',
-            padding: '1rem',
-            background: '#f5f5f5',
-            borderRadius: '4px',
-          }}
-        >
-          {hoveredCell ? (
-            <div>
-              <h4 style={{ margin: '0 0 0.5rem 0' }}>
-                {hoveredCell.showA.title} &amp; {hoveredCell.showB.title}
-              </h4>
-              <p>
-                <strong>{hoveredCell.sharedWriters.length}</strong> shared
-                writer{hoveredCell.sharedWriters.length !== 1 ? 's' : ''}
-              </p>
-              {hoveredCell.sharedWriters.length > 0 && (
-                <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '14px' }}>
-                  {hoveredCell.sharedWriters.slice(0, 8).map(w => (
-                    <li key={w.id}>{w.name}</li>
-                  ))}
-                  {hoveredCell.sharedWriters.length > 8 && (
-                    <li style={{ fontStyle: 'italic' }}>
-                      ... and {hoveredCell.sharedWriters.length - 8} more
+            {/* Row labels (left) */}
+            {enrichedShows.map((show, i) => (
+              <g key={`row-${show.id}`}>
+                <a
+                  href={imdbShowUrl(show.imdbId)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <text
+                    x={labelPadding - 8}
+                    y={headerHeight + i * cellSize + cellSize / 2 + 4}
+                    textAnchor="end"
+                    className="matrix-label row-label"
+                  >
+                    {show.title.length > 18 ? show.title.slice(0, 18) + '…' : show.title}
+                  </text>
+                </a>
+              </g>
+            ))}
+
+            {/* Matrix cells */}
+            {matrix.map((row, i) =>
+              row.map((value, j) => (
+                <g key={`${i}-${j}`}>
+                  <rect
+                    x={labelPadding + j * cellSize}
+                    y={headerHeight + i * cellSize}
+                    width={cellSize - 3}
+                    height={cellSize - 3}
+                    rx={4}
+                    fill={getColor(value, i === j)}
+                    className={`matrix-cell ${i !== j ? 'interactive' : ''} ${
+                      activeCell?.showA.id === enrichedShows[i].id &&
+                      activeCell?.showB.id === enrichedShows[j].id
+                        ? 'selected'
+                        : ''
+                    }`}
+                    onMouseEnter={() => handleCellHover(i, j)}
+                    onMouseLeave={() => setHoveredCell(null)}
+                    onClick={() => handleCellClick(i, j)}
+                  />
+                  <text
+                    x={labelPadding + j * cellSize + cellSize / 2 - 1.5}
+                    y={headerHeight + i * cellSize + cellSize / 2 + 5}
+                    textAnchor="middle"
+                    className={`cell-value ${i === j ? 'diagonal' : value > 0 ? 'has-value' : ''}`}
+                  >
+                    {i === j ? '—' : value}
+                  </text>
+                </g>
+              ))
+            )}
+          </svg>
+        </div>
+
+        {/* Details panel */}
+        <div className="details-panel">
+          {activeCell ? (
+            <div className="cell-details">
+              <div className="show-pair">
+                <a
+                  href={imdbShowUrl(activeCell.showA.imdbId)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="show-link"
+                  onClick={() => onShowSelect?.(activeCell.showA)}
+                >
+                  {activeCell.showA.title}
+                </a>
+                <span className="connector">×</span>
+                <a
+                  href={imdbShowUrl(activeCell.showB.imdbId)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="show-link"
+                  onClick={() => onShowSelect?.(activeCell.showB)}
+                >
+                  {activeCell.showB.title}
+                </a>
+              </div>
+
+              <div className="shared-count">
+                <span className="count">{activeCell.sharedWriters.length}</span>
+                <span className="label">shared writer{activeCell.sharedWriters.length !== 1 ? 's' : ''}</span>
+              </div>
+
+              {activeCell.sharedWriters.length > 0 && (
+                <ul className="writer-list">
+                  {activeCell.sharedWriters.map(w => (
+                    <li key={w.id}>
+                      <a
+                        href={imdbWriterUrl(w.imdbId)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="writer-link"
+                      >
+                        {w.name}
+                        <span className="external-icon">↗</span>
+                      </a>
                     </li>
-                  )}
+                  ))}
                 </ul>
               )}
             </div>
           ) : (
-            <p style={{ color: '#666', fontStyle: 'italic', margin: 0 }}>
-              Hover over a cell to see shared writers
-            </p>
+            <div className="empty-state">
+              <div className="icon">🎬</div>
+              <p>Hover or click a cell to explore shared writers between shows</p>
+            </div>
           )}
         </div>
       </div>
 
-      {/* Color legend */}
-      <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <span>0 writers</span>
-        <div
-          style={{
-            width: '150px',
-            height: '20px',
-            background: 'linear-gradient(to right, #fff, #9ddb8a)',
-            border: '1px solid #ccc',
-          }}
-        />
-        <span>{maxValue} writers</span>
+      {/* Legend */}
+      <div className="legend">
+        <span className="legend-label">No overlap</span>
+        <div className="gradient-bar" />
+        <span className="legend-label">{maxValue}+ shared</span>
       </div>
     </div>
   );

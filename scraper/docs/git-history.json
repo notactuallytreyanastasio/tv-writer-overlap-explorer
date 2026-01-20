@@ -1,0 +1,18 @@
+[
+  {
+    "hash": "6824dfee77d6f20a145d1e911b4fc51b628e1d23",
+    "short_hash": "6824dfe",
+    "author": "Wachsman, Joshua",
+    "date": "2026-01-19T13:49:39-05:00",
+    "message": "feat: Add React/TypeScript web app with 3 visualization drafts\n\nImplements TV writer overlap explorer with:\n- Draft 1: Force-directed graph (D3) - shows connected by shared writers\n- Draft 2: Interactive Venn diagram - select 2-3 shows to compare\n- Draft 3: Matrix heatmap - grid of shared writer counts\n\nArchitecture:\n- Functional core: pure types and functions in src/core/\n- Imperative shell: API client in src/shell/\n- 35 unit tests for function composition\n- Strict TypeScript with noImplicitAny\n\nAlso adds Python API server (scraper/api.py) to serve data as JSON.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+    "files_changed": 27
+  },
+  {
+    "hash": "bad5d151a545f080123edcb0dba7082b976bf483",
+    "short_hash": "bad5d15",
+    "author": "Wachsman, Joshua",
+    "date": "2026-01-19T13:39:32-05:00",
+    "message": "feat: Add IMDB TV show writer scraper\n\nImplements Python scraper using requests/BeautifulSoup to extract\nwriter credits from IMDB's fullcredits pages. Uses __NEXT_DATA__ JSON\nfor reliable data extraction.\n\nIncludes:\n- SQLite database with normalized schema (shows, writers, show_writers)\n- Support for extracting episode counts and writer roles\n- Seeded with 10 shows: Gilmore Girls, Scrubs, Better Off Ted, etc.\n- Found 271 writers with 10 showing cross-show overlap\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+    "files_changed": 0
+  }
+]
