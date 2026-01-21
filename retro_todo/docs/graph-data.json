@@ -1,0 +1,347 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "change_id": "97d63255-3674-44f7-ab95-51a6ab1bf36f",
+      "node_type": "goal",
+      "title": "Implement 90s Mac OS style todo list in Phoenix",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:17:53.616457-05:00",
+      "updated_at": "2026-01-21T11:17:53.616457-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":85,\"prompt\":\"implement a todo list in elixir/phoenix\\n\\n- it should support tasks being linked\\n- it should support having due dates\\n- it should support having a js widget that you can drag into your bookmarks toolbar and sync\\n- it should look like its a 1990s mac OS program\\n\\nTRACK ALL DECISION MAKING AND LOGIC IN DEPTH USING DECIDUOUS, ALL THE DEETS\"}"
+    },
+    {
+      "id": 2,
+      "change_id": "65fdd57e-8c52-4b9b-8cb8-a4eeabe7b1be",
+      "node_type": "decision",
+      "title": "Choose Phoenix architecture approach",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:18:01.667012-05:00",
+      "updated_at": "2026-01-21T11:18:01.667012-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":80}"
+    },
+    {
+      "id": 3,
+      "change_id": "6eabbe41-06bd-4a70-89d7-a32f2cb48455",
+      "node_type": "option",
+      "title": "Phoenix LiveView for real-time UI",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:18:08.982777-05:00",
+      "updated_at": "2026-01-21T11:18:08.982777-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":90}"
+    },
+    {
+      "id": 4,
+      "change_id": "36db87cf-29e6-46af-8760-a34728b68d6b",
+      "node_type": "option",
+      "title": "Traditional Phoenix with REST API",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:18:10.564032-05:00",
+      "updated_at": "2026-01-21T11:18:10.564032-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":70}"
+    },
+    {
+      "id": 5,
+      "change_id": "a6d294ff-d8ca-4f97-8753-d72d43af474c",
+      "node_type": "outcome",
+      "title": "Selected LiveView - better for interactive todo with drag/drop, linking, real-time sync with bookmarklet",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:18:23.702944-05:00",
+      "updated_at": "2026-01-21T11:18:23.702944-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":90}"
+    },
+    {
+      "id": 6,
+      "change_id": "60a06249-efc6-4967-a8cc-993b2be6c162",
+      "node_type": "action",
+      "title": "Creating Phoenix project with LiveView",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:18:31.776777-05:00",
+      "updated_at": "2026-01-21T11:18:31.776777-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":90}"
+    },
+    {
+      "id": 7,
+      "change_id": "1dedf1bb-52cd-4bb9-a828-d5ed4b062e76",
+      "node_type": "outcome",
+      "title": "Phoenix project created successfully",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:19:17.447425-05:00",
+      "updated_at": "2026-01-21T11:19:17.447425-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":95}"
+    },
+    {
+      "id": 8,
+      "change_id": "f0e08e1c-9aac-4428-98d8-fa7657204408",
+      "node_type": "decision",
+      "title": "Database schema design for linked tasks",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:19:26.882019-05:00",
+      "updated_at": "2026-01-21T11:19:26.882019-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":85}"
+    },
+    {
+      "id": 9,
+      "change_id": "3d18c7ee-e44e-4dfa-b949-96b8e363ae82",
+      "node_type": "observation",
+      "title": "Need two tables: tasks (main) and task_links (self-referential many-to-many with link_type)",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:19:28.438963-05:00",
+      "updated_at": "2026-01-21T11:19:28.438963-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":90}"
+    },
+    {
+      "id": 10,
+      "change_id": "0957542a-70dd-4bcc-9480-f98e050fd0e0",
+      "node_type": "action",
+      "title": "Creating tasks schema and context",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:19:47.650953-05:00",
+      "updated_at": "2026-01-21T11:19:47.650953-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":90}"
+    },
+    {
+      "id": 11,
+      "change_id": "53ac9768-d223-4d9d-9f4a-20b09aee7c7c",
+      "node_type": "outcome",
+      "title": "Task schema, TaskLink schema, and Tasks context implemented with linking support",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:21:37.641434-05:00",
+      "updated_at": "2026-01-21T11:21:37.641434-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":90}"
+    },
+    {
+      "id": 12,
+      "change_id": "b7f7bce0-4c47-488b-b59f-79823c72f03f",
+      "node_type": "action",
+      "title": "Creating 1990s Mac OS System 7 CSS styling",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:21:54.223275-05:00",
+      "updated_at": "2026-01-21T11:21:54.223275-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":85}"
+    },
+    {
+      "id": 13,
+      "change_id": "8aadb70c-a61d-47a5-a585-02273c0cc0bd",
+      "node_type": "outcome",
+      "title": "System 7 CSS styling created with classic Mac window chrome, buttons, inputs, and retro aesthetic",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:23:08.957599-05:00",
+      "updated_at": "2026-01-21T11:23:08.957599-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":90}"
+    },
+    {
+      "id": 14,
+      "change_id": "c3d186f3-8422-41d2-9127-829a388842ad",
+      "node_type": "action",
+      "title": "Building TodoLive LiveView with CRUD, linking, and due dates",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:23:17.327422-05:00",
+      "updated_at": "2026-01-21T11:23:17.327422-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":85}"
+    },
+    {
+      "id": 15,
+      "change_id": "80e82443-91e2-4089-8b77-64a244896545",
+      "node_type": "outcome",
+      "title": "LiveView implemented with CRUD, linking modal, due dates, and bookmarklet modal",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:26:35.334245-05:00",
+      "updated_at": "2026-01-21T11:26:35.334245-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":90}"
+    },
+    {
+      "id": 16,
+      "change_id": "89a1524a-4b29-42eb-8dfd-a1762b6d9a58",
+      "node_type": "outcome",
+      "title": "All tests pass, implementation complete",
+      "description": null,
+      "status": "pending",
+      "created_at": "2026-01-21T11:27:59.805907-05:00",
+      "updated_at": "2026-01-21T11:27:59.805907-05:00",
+      "metadata_json": "{\"branch\":\"main\",\"confidence\":95}"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1,
+      "from_node_id": 1,
+      "to_node_id": 2,
+      "from_change_id": "97d63255-3674-44f7-ab95-51a6ab1bf36f",
+      "to_change_id": "65fdd57e-8c52-4b9b-8cb8-a4eeabe7b1be",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Architecture decision for todo app",
+      "created_at": "2026-01-21T11:18:02.496185-05:00"
+    },
+    {
+      "id": 2,
+      "from_node_id": 2,
+      "to_node_id": 3,
+      "from_change_id": "65fdd57e-8c52-4b9b-8cb8-a4eeabe7b1be",
+      "to_change_id": "6eabbe41-06bd-4a70-89d7-a32f2cb48455",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "LiveView enables reactive UI for drag-drop and real-time sync",
+      "created_at": "2026-01-21T11:18:11.144272-05:00"
+    },
+    {
+      "id": 3,
+      "from_node_id": 2,
+      "to_node_id": 4,
+      "from_change_id": "65fdd57e-8c52-4b9b-8cb8-a4eeabe7b1be",
+      "to_change_id": "36db87cf-29e6-46af-8760-a34728b68d6b",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "REST API simpler but less interactive",
+      "created_at": "2026-01-21T11:18:11.929885-05:00"
+    },
+    {
+      "id": 4,
+      "from_node_id": 3,
+      "to_node_id": 5,
+      "from_change_id": "6eabbe41-06bd-4a70-89d7-a32f2cb48455",
+      "to_change_id": "a6d294ff-d8ca-4f97-8753-d72d43af474c",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "LiveView chosen for reactive features",
+      "created_at": "2026-01-21T11:18:24.550521-05:00"
+    },
+    {
+      "id": 5,
+      "from_node_id": 5,
+      "to_node_id": 6,
+      "from_change_id": "a6d294ff-d8ca-4f97-8753-d72d43af474c",
+      "to_change_id": "60a06249-efc6-4967-a8cc-993b2be6c162",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Starting implementation after architecture decision",
+      "created_at": "2026-01-21T11:18:39.698135-05:00"
+    },
+    {
+      "id": 6,
+      "from_node_id": 6,
+      "to_node_id": 7,
+      "from_change_id": "60a06249-efc6-4967-a8cc-993b2be6c162",
+      "to_change_id": "1dedf1bb-52cd-4bb9-a828-d5ed4b062e76",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Project scaffolded",
+      "created_at": "2026-01-21T11:19:18.065006-05:00"
+    },
+    {
+      "id": 7,
+      "from_node_id": 7,
+      "to_node_id": 8,
+      "from_change_id": "1dedf1bb-52cd-4bb9-a828-d5ed4b062e76",
+      "to_change_id": "f0e08e1c-9aac-4428-98d8-fa7657204408",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Designing schema after project setup",
+      "created_at": "2026-01-21T11:19:27.756169-05:00"
+    },
+    {
+      "id": 8,
+      "from_node_id": 8,
+      "to_node_id": 9,
+      "from_change_id": "f0e08e1c-9aac-4428-98d8-fa7657204408",
+      "to_change_id": "3d18c7ee-e44e-4dfa-b949-96b8e363ae82",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Schema structure insight",
+      "created_at": "2026-01-21T11:19:30.487311-05:00"
+    },
+    {
+      "id": 9,
+      "from_node_id": 9,
+      "to_node_id": 10,
+      "from_change_id": "3d18c7ee-e44e-4dfa-b949-96b8e363ae82",
+      "to_change_id": "0957542a-70dd-4bcc-9480-f98e050fd0e0",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Implementing schema design",
+      "created_at": "2026-01-21T11:19:49.162720-05:00"
+    },
+    {
+      "id": 10,
+      "from_node_id": 10,
+      "to_node_id": 11,
+      "from_change_id": "0957542a-70dd-4bcc-9480-f98e050fd0e0",
+      "to_change_id": "53ac9768-d223-4d9d-9f4a-20b09aee7c7c",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Schema implementation completed",
+      "created_at": "2026-01-21T11:21:46.280845-05:00"
+    },
+    {
+      "id": 11,
+      "from_node_id": 11,
+      "to_node_id": 12,
+      "from_change_id": "53ac9768-d223-4d9d-9f4a-20b09aee7c7c",
+      "to_change_id": "b7f7bce0-4c47-488b-b59f-79823c72f03f",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Creating visual style after backend",
+      "created_at": "2026-01-21T11:21:54.924418-05:00"
+    },
+    {
+      "id": 12,
+      "from_node_id": 12,
+      "to_node_id": 13,
+      "from_change_id": "b7f7bce0-4c47-488b-b59f-79823c72f03f",
+      "to_change_id": "8aadb70c-a61d-47a5-a585-02273c0cc0bd",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "CSS styling completed",
+      "created_at": "2026-01-21T11:23:09.987885-05:00"
+    },
+    {
+      "id": 13,
+      "from_node_id": 13,
+      "to_node_id": 14,
+      "from_change_id": "8aadb70c-a61d-47a5-a585-02273c0cc0bd",
+      "to_change_id": "c3d186f3-8422-41d2-9127-829a388842ad",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Building UI after styling",
+      "created_at": "2026-01-21T11:23:18.022063-05:00"
+    },
+    {
+      "id": 14,
+      "from_node_id": 14,
+      "to_node_id": 15,
+      "from_change_id": "c3d186f3-8422-41d2-9127-829a388842ad",
+      "to_change_id": "80e82443-91e2-4089-8b77-64a244896545",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "LiveView implementation completed",
+      "created_at": "2026-01-21T11:26:36.342394-05:00"
+    },
+    {
+      "id": 15,
+      "from_node_id": 15,
+      "to_node_id": 16,
+      "from_change_id": "80e82443-91e2-4089-8b77-64a244896545",
+      "to_change_id": "89a1524a-4b29-42eb-8dfd-a1762b6d9a58",
+      "edge_type": "leads_to",
+      "weight": 1.0,
+      "rationale": "Implementation verified with tests",
+      "created_at": "2026-01-21T11:28:00.664911-05:00"
+    }
+  ]
+}

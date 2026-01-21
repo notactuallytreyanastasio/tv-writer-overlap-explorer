@@ -1,0 +1,593 @@
+/* See the Tailwind configuration guide for advanced usage
+   https://tailwindcss.com/docs/configuration */
+
+@import "tailwindcss" source(none);
+@source "../css";
+@source "../js";
+@source "../../lib/retro_todo_web";
+
+/* A Tailwind plugin that makes "hero-#{ICON}" classes available.
+   The heroicons installation itself is managed by your mix.exs */
+@plugin "../vendor/heroicons";
+
+/* daisyUI Tailwind Plugin. You can update this file by fetching the latest version with:
+   curl -sLO https://github.com/saadeghi/daisyui/releases/latest/download/daisyui.js
+   Make sure to look at the daisyUI changelog: https://daisyui.com/docs/changelog/ */
+@plugin "../vendor/daisyui" {
+  themes: false;
+}
+
+/* daisyUI theme plugin. You can update this file by fetching the latest version with:
+  curl -sLO https://github.com/saadeghi/daisyui/releases/latest/download/daisyui-theme.js
+  We ship with two themes, a light one inspired on Phoenix colors and a dark one inspired
+  on Elixir colors. Build your own at: https://daisyui.com/theme-generator/ */
+@plugin "../vendor/daisyui-theme" {
+  name: "dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: "dark";
+  --color-base-100: oklch(30.33% 0.016 252.42);
+  --color-base-200: oklch(25.26% 0.014 253.1);
+  --color-base-300: oklch(20.15% 0.012 254.09);
+  --color-base-content: oklch(97.807% 0.029 256.847);
+  --color-primary: oklch(58% 0.233 277.117);
+  --color-primary-content: oklch(96% 0.018 272.314);
+  --color-secondary: oklch(58% 0.233 277.117);
+  --color-secondary-content: oklch(96% 0.018 272.314);
+  --color-accent: oklch(60% 0.25 292.717);
+  --color-accent-content: oklch(96% 0.016 293.756);
+  --color-neutral: oklch(37% 0.044 257.287);
+  --color-neutral-content: oklch(98% 0.003 247.858);
+  --color-info: oklch(58% 0.158 241.966);
+  --color-info-content: oklch(97% 0.013 236.62);
+  --color-success: oklch(60% 0.118 184.704);
+  --color-success-content: oklch(98% 0.014 180.72);
+  --color-warning: oklch(66% 0.179 58.318);
+  --color-warning-content: oklch(98% 0.022 95.277);
+  --color-error: oklch(58% 0.253 17.585);
+  --color-error-content: oklch(96% 0.015 12.422);
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 1.5px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@plugin "../vendor/daisyui-theme" {
+  name: "light";
+  default: true;
+  prefersdark: false;
+  color-scheme: "light";
+  --color-base-100: oklch(98% 0 0);
+  --color-base-200: oklch(96% 0.001 286.375);
+  --color-base-300: oklch(92% 0.004 286.32);
+  --color-base-content: oklch(21% 0.006 285.885);
+  --color-primary: oklch(70% 0.213 47.604);
+  --color-primary-content: oklch(98% 0.016 73.684);
+  --color-secondary: oklch(55% 0.027 264.364);
+  --color-secondary-content: oklch(98% 0.002 247.839);
+  --color-accent: oklch(0% 0 0);
+  --color-accent-content: oklch(100% 0 0);
+  --color-neutral: oklch(44% 0.017 285.786);
+  --color-neutral-content: oklch(98% 0 0);
+  --color-info: oklch(62% 0.214 259.815);
+  --color-info-content: oklch(97% 0.014 254.604);
+  --color-success: oklch(70% 0.14 182.503);
+  --color-success-content: oklch(98% 0.014 180.72);
+  --color-warning: oklch(66% 0.179 58.318);
+  --color-warning-content: oklch(98% 0.022 95.277);
+  --color-error: oklch(58% 0.253 17.585);
+  --color-error-content: oklch(96% 0.015 12.422);
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.21875rem;
+  --size-field: 0.21875rem;
+  --border: 1.5px;
+  --depth: 1;
+  --noise: 0;
+}
+
+/* Add variants based on LiveView classes */
+@custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
+@custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
+@custom-variant phx-change-loading (.phx-change-loading&, .phx-change-loading &);
+
+/* Use the data attribute for dark mode  */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* Make LiveView wrapper divs transparent for layout */
+[data-phx-session], [data-phx-teleported-src] { display: contents }
+
+/* This file is for your main application CSS */
+
+/* ===== 1990s Mac OS System 7 Theme ===== */
+
+/* Import a pixel/bitmap-style font similar to Chicago */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+:root {
+  /* System 7 Color Palette */
+  --mac-white: #ffffff;
+  --mac-black: #000000;
+  --mac-gray-light: #dddddd;
+  --mac-gray: #c0c0c0;
+  --mac-gray-medium: #a0a0a0;
+  --mac-gray-dark: #808080;
+  --mac-highlight: #000080;
+  --mac-highlight-text: #ffffff;
+  --mac-window-bg: #dddddd;
+  --mac-desktop-pattern: #6699cc;
+
+  /* System 7 Borders */
+  --mac-border-light: #ffffff;
+  --mac-border-dark: #555555;
+  --mac-border-darker: #000000;
+}
+
+/* Reset some Tailwind defaults for our retro look */
+body {
+  font-family: 'VT323', 'Chicago', 'Charcoal', 'Geneva', monospace !important;
+  font-size: 16px;
+  background-color: var(--mac-desktop-pattern);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.03) 2px,
+      rgba(255,255,255,0.03) 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.03) 2px,
+      rgba(255,255,255,0.03) 4px
+    );
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mac OS System 7 Window */
+.mac-window {
+  background-color: var(--mac-window-bg);
+  border: 2px solid var(--mac-black);
+  box-shadow:
+    inset -1px -1px 0 var(--mac-border-dark),
+    inset 1px 1px 0 var(--mac-border-light),
+    2px 2px 0 rgba(0,0,0,0.3);
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+/* Window Title Bar */
+.mac-title-bar {
+  background: var(--mac-white);
+  border-bottom: 2px solid var(--mac-black);
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 24px;
+  cursor: default;
+  user-select: none;
+}
+
+/* Title bar stripes - classic Mac OS look */
+.mac-title-bar::before,
+.mac-title-bar::after {
+  content: '';
+  flex: 1;
+  height: 12px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--mac-black) 0px,
+    var(--mac-black) 1px,
+    var(--mac-white) 1px,
+    var(--mac-white) 3px
+  );
+}
+
+.mac-title-bar-text {
+  font-family: 'VT323', 'Chicago', monospace;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+  padding: 0 12px;
+}
+
+/* Close box */
+.mac-close-box {
+  width: 14px;
+  height: 14px;
+  background: var(--mac-white);
+  border: 2px solid var(--mac-black);
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.mac-close-box:active {
+  background: var(--mac-black);
+}
+
+/* Window Content Area */
+.mac-window-content {
+  padding: 16px;
+  background: var(--mac-window-bg);
+}
+
+/* System 7 Button Style */
+.mac-button {
+  font-family: 'VT323', 'Chicago', monospace !important;
+  font-size: 16px;
+  background: var(--mac-white);
+  border: 2px solid var(--mac-black);
+  box-shadow:
+    inset -1px -1px 0 var(--mac-gray-dark),
+    inset 1px 1px 0 var(--mac-white);
+  padding: 4px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  min-height: 28px;
+}
+
+.mac-button:hover {
+  background: var(--mac-gray-light);
+}
+
+.mac-button:active {
+  background: var(--mac-gray-dark);
+  box-shadow:
+    inset 1px 1px 0 var(--mac-gray-dark),
+    inset -1px -1px 0 var(--mac-white);
+}
+
+.mac-button-primary {
+  border-width: 3px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+/* System 7 Text Input */
+.mac-input {
+  font-family: 'VT323', 'Geneva', monospace !important;
+  font-size: 16px;
+  background: var(--mac-white);
+  border: 2px solid var(--mac-black);
+  box-shadow: inset 1px 1px 0 var(--mac-gray-dark);
+  padding: 4px 8px;
+  outline: none;
+}
+
+.mac-input:focus {
+  outline: 2px solid var(--mac-highlight);
+  outline-offset: 1px;
+}
+
+/* System 7 Checkbox */
+.mac-checkbox {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--mac-white);
+  border: 2px solid var(--mac-black);
+  cursor: pointer;
+  vertical-align: middle;
+  position: relative;
+}
+
+.mac-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 8px;
+  height: 8px;
+  background: var(--mac-black);
+}
+
+/* Task List Item */
+.mac-task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--mac-gray-medium);
+  background: var(--mac-white);
+}
+
+.mac-task-item:last-child {
+  border-bottom: none;
+}
+
+.mac-task-item:hover {
+  background: var(--mac-highlight);
+  color: var(--mac-highlight-text);
+}
+
+.mac-task-item:hover .mac-checkbox {
+  border-color: var(--mac-white);
+}
+
+.mac-task-item.completed .mac-task-title {
+  text-decoration: line-through;
+  color: var(--mac-gray-dark);
+}
+
+.mac-task-title {
+  flex: 1;
+  font-size: 18px;
+}
+
+.mac-task-due-date {
+  font-size: 14px;
+  color: var(--mac-gray-dark);
+  background: var(--mac-gray-light);
+  padding: 2px 8px;
+  border: 1px solid var(--mac-gray-dark);
+}
+
+/* Task Links Badge */
+.mac-link-badge {
+  font-size: 12px;
+  background: var(--mac-gray);
+  border: 1px solid var(--mac-black);
+  padding: 1px 6px;
+  cursor: pointer;
+}
+
+/* List container with inset border */
+.mac-list-container {
+  background: var(--mac-white);
+  border: 2px solid var(--mac-black);
+  box-shadow: inset 1px 1px 0 var(--mac-gray-dark);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Scrollbar styling for retro look */
+.mac-list-container::-webkit-scrollbar {
+  width: 16px;
+}
+
+.mac-list-container::-webkit-scrollbar-track {
+  background: var(--mac-gray);
+  border-left: 1px solid var(--mac-black);
+}
+
+.mac-list-container::-webkit-scrollbar-thumb {
+  background: var(--mac-white);
+  border: 1px solid var(--mac-black);
+  box-shadow: inset -1px -1px 0 var(--mac-gray-dark);
+}
+
+/* Form group */
+.mac-form-group {
+  margin-bottom: 12px;
+}
+
+.mac-label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+/* Modal/Dialog overlay */
+.mac-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.mac-modal {
+  background: var(--mac-window-bg);
+  border: 2px solid var(--mac-black);
+  box-shadow:
+    inset -1px -1px 0 var(--mac-border-dark),
+    inset 1px 1px 0 var(--mac-border-light),
+    4px 4px 0 rgba(0,0,0,0.4);
+  min-width: 300px;
+  max-width: 500px;
+}
+
+/* Divider line */
+.mac-divider {
+  height: 2px;
+  background: var(--mac-black);
+  margin: 12px 0;
+}
+
+/* Menu bar style header */
+.mac-menubar {
+  background: var(--mac-white);
+  border-bottom: 2px solid var(--mac-black);
+  padding: 2px 16px;
+  display: flex;
+  gap: 16px;
+  font-weight: bold;
+}
+
+/* Date picker wrapper */
+.mac-date-input {
+  font-family: 'VT323', 'Geneva', monospace !important;
+  font-size: 16px;
+  background: var(--mac-white);
+  border: 2px solid var(--mac-black);
+  box-shadow: inset 1px 1px 0 var(--mac-gray-dark);
+  padding: 4px 8px;
+}
+
+/* Action buttons row */
+.mac-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+/* Icon buttons */
+.mac-icon-button {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--mac-white);
+  border: 1px solid var(--mac-black);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.mac-icon-button:hover {
+  background: var(--mac-gray-light);
+}
+
+.mac-icon-button:active {
+  background: var(--mac-gray-dark);
+}
+
+/* Empty state */
+.mac-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--mac-gray-dark);
+  font-size: 18px;
+}
+
+/* Flash messages in Mac style */
+.mac-flash {
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border: 2px solid var(--mac-black);
+  background: var(--mac-white);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mac-flash-info {
+  border-left: 6px solid var(--mac-highlight);
+}
+
+.mac-flash-error {
+  border-left: 6px solid #cc0000;
+  background: #ffeeee;
+}
+
+/* Dropdown/Select */
+.mac-select {
+  font-family: 'VT323', 'Geneva', monospace !important;
+  font-size: 16px;
+  background: var(--mac-white);
+  border: 2px solid var(--mac-black);
+  padding: 4px 8px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M2 4l4 4 4-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 28px;
+}
+
+/* Toolbar */
+.mac-toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--mac-gray-light);
+  border-bottom: 2px solid var(--mac-black);
+}
+
+/* Link type badges */
+.mac-link-type {
+  font-size: 12px;
+  padding: 2px 6px;
+  border: 1px solid var(--mac-black);
+  background: var(--mac-gray-light);
+  text-transform: uppercase;
+}
+
+.mac-link-type-blocks {
+  background: #ffcccc;
+}
+
+.mac-link-type-blocked_by {
+  background: #ffffcc;
+}
+
+.mac-link-type-parent {
+  background: #ccffcc;
+}
+
+.mac-link-type-child {
+  background: #ccccff;
+}
+
+/* Loading spinner - old school */
+.mac-loading {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--mac-black);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: mac-spin 1s linear infinite;
+}
+
+@keyframes mac-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Hide Phoenix default styling conflicts */
+.phx-hero, .phoenix-hero {
+  display: none !important;
+}
+
+/* Overdue task styling */
+.mac-task-due-date.overdue {
+  background: #ffcccc !important;
+  border-color: #cc0000 !important;
+  color: #cc0000 !important;
+  font-weight: bold;
+}
+
+/* Flash message animations */
+.mac-flash {
+  animation: mac-flash-in 0.2s ease-out;
+}
+
+@keyframes mac-flash-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Drag handle for sortable items (future feature) */
+.mac-drag-handle {
+  cursor: grab;
+  color: var(--mac-gray-dark);
+}
+
+.mac-drag-handle:active {
+  cursor: grabbing;
+}
